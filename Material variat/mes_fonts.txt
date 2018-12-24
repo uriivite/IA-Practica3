@@ -1,0 +1,8 @@
+Como usar Fast Forward	-> 	http://www.cs.upc.edu/%7Ejvazquez/teaching/iag/laboratorio/run_ff.html
+
+Pagina de FF 		->	http://fai.cs.uni-saarland.de/hoffmann/ff.html
+
+Guia PDDL		->	https://www.ida.liu.se/%7ETDDC17/info/labs/planning/writing.shtml
+				http://users.cecs.anu.edu.au/%7Epatrik/pddlman/writing.html
+
+
