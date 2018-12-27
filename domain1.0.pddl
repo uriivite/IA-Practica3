@@ -20,7 +20,7 @@
 
 (:action translate
   :parameters (?r - rover ?b - base ?a0 - assentament ?a1 - assentament ?c - combustible)
-  :precondition (and (or (aparcat ?r ?b) (l_rover ?r ?a0)))
+  :precondition (or (aparcat ?r ?b) (l_rover ?r ?a0))
   :effect (and (when (aparcat ?r ?b) (not (aparcat ?r ?b)) ) (when (l_rover ?r ?a0)
             (not (l_rover ?r ?a0)) ) (l_rover ?r ?a1)  )
 )
