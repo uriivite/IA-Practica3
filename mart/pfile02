@@ -1,0 +1,24 @@
+(define (problem roverprob1) (:domain Mart)
+	(:objects
+		rover0 - rover
+		base0 - base
+		assentament0 assentament1 assentament2 - assentament
+		persona0 - persona
+		suministre0 - suministre
+		)
+	(:init
+		(aparcat rover0 base0)
+		(rover_buit rover0)
+		;(aparcat rover1 base0)
+		;(rover_buit rover1)
+		(l_sum suministre0 assentament0)
+		(l_persona persona0 assentament0)
+		(peticio_s suministre0 assentament1)
+		(peticio_p persona0 assentament2)
+
+	)
+	(:goal
+		(and(deixo_s suministre0 assentament1)
+			(deixo_p persona0 assentament2))
+	)
+)
