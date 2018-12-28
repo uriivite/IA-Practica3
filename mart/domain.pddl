@@ -1,6 +1,6 @@
 (define (domain Mart)
-  (:requirements :adl :typing :equality :fluents)
-  (:types rover persona suministre assentament base combustible)
+  (:requirements :adl :typing :equality :fluents :action-costs :conditional-effects)
+  (:types rover persona suministre assentament base)
 
   (:predicates
       (aparcat    ?r - rover      ?b - base)                        ; rover ?r aparcat a ?a
@@ -11,22 +11,22 @@
       (rover_1p   ?r - rover      ?p  - persona)                    ; el rover ?r porta 1 persona
       (rover_2p   ?r - rover      ?p1 - persona     ?p2 - persona)  ; el rover ?r porta 2 persones
       (rover_s    ?r - rover      ?s  - suministre)                 ; el rover ?r porta el suministre ?s
-      ;(comb_rest  ?r - rover      ?c  - combustible)                ; el rover ?r disposa de ?c combustible
       (peticio_p  ?p - persona    ?a - assentament)                 ; la persona ?p ha de ser a l'assentament ?a
       (peticio_s  ?s - suministre ?a - assentament)                 ; el suministre ?s ha de ser a ?a
-      (deixo_p    ?p - persona    ?a - assentament)                 ; la persona ?p ha sigut transportada a l'assentament ?a
-      (deixo_s    ?s - suministre ?a - assentament)                 ; el suministre ?s ha sigut transportat a l'assentament ?a
+      (deixo_p    ?p - persona    )                 ; la persona ?p ha sigut transportada a l'assentament ?a
+      (deixo_s    ?s - suministre )                 ; el suministre ?s ha sigut transportat a l'assentament ?a
   )
   (:functions
-  	(funcion1 ?c - combustible)
-  	(coste-total)
-  )
+    (comb_inicial)
+    (coste-total-combustible)
+    (fuel-level ?r - rover)
+    )
 
 (:action translate
-  :parameters (?r - rover ?b - base ?a0 - assentament ?a1 - assentament ?c - combustible)
-  :precondition (and (or (aparcat ?r ?b) (l_rover ?r ?a0)) (>= (funcion1 ?c) 1))
+  :parameters (?r - rover ?b - base ?a0 - assentament ?a1 - assentament)
+  :precondition (and (or (aparcat ?r ?b) (l_rover ?r ?a0)) (> (comb_restant ?r) 1))
   :effect (and (when (aparcat ?r ?b) (not (aparcat ?r ?b)) ) (when (l_rover ?r ?a0)
-            (not (l_rover ?r ?a0)) ) (l_rover ?r ?a1) (increase(coste-total) 1))
+            (not (l_rover ?r ?a0)) ) (l_rover ?r ?a1) (increase (coste-total-combustible) 1) (decrease (comb_restant ?r) 1))
 )
 
 
@@ -38,7 +38,7 @@
           (when (rover_1p ?r ?p2) (rover_2p ?r ?p ?p2) ))
 )
 
-(:action pick2person		
+(:action pick2person
 :parameters (?r - rover ?p1 - persona ?p2 - persona ?a - assentament)
 :precondition (and (l_rover ?r ?a) (l_persona ?p1 ?a) (l_persona ?p2 ?a) (rover_buit ?r))
 
@@ -67,31 +67,31 @@
             	(not (rover_1p ?r ?p2))
             	(not (rover_2p ?r ?p1 ?p2))
                 (deixo_p ?p1 ?a)
-            	(deixo_p ?p2 ?a)
+            	(deixo_p ?p2)
             	(rover_buit ?r)
             )
           )
           (when (and (rover_1p ?r ?p1) (rover_1p ?r ?p2)(peticio_p ?p1 ?a)(not(peticio_p ?p2 ?a)))
               (and (not (rover_1p ?r ?p1))
-                    (deixo_p ?p1 ?a)
+                    (deixo_p ?p1)
                     (rover_1p ?r ?p2)
               )
           )
           (when (and (rover_1p ?r ?p1) (rover_1p ?r ?p2)(peticio_p ?p2 ?a)(not(peticio_p ?p1 ?a)))
               (and (not (rover_1p ?r ?p2))
-                    (deixo_p ?p2 ?a)
+                    (deixo_p ?p2)
                     (rover_1p ?r ?p1)
               )
           )
           (when (and (rover_1p ?r ?p1) (peticio_p ?p1 ?a))
               (and (not (rover_1p ?r ?p1))
-                    (deixo_p ?p1 ?a)
+                    (deixo_p ?p1)
                     (rover_buit ?r)
               )
           )
           (when (and (rover_s ?r ?s) (peticio_s ?s ?a) )
             (and (not (rover_s ?r ?s))
-                  (deixo_s ?s ?a)
+                  (deixo_s ?s)
                   (rover_buit ?r)
             )
           ))
@@ -100,8 +100,8 @@
 
 (:action carregar
 	:parameters (?r - rover ?b - base  ?a - assentament)
-	:precondition (and (not(aparcat ?r ?b)) (l_rover ?r ?a)) 
-	:effect (and (aparcat ?r ?b) (not(l_rover ?r ?a)) )
+	:precondition (and (not (aparcat ?r ?b)) (l_rover ?r ?a) (= (fuel-level ?r) 1)
+	:effect (and (aparcat ?r ?b) (not (l_rover ?r ?a)) (assign (fuel-level ?r) comb_inicial) (increase (coste-total-combustible) 1))
 )
 
 )

@@ -4,13 +4,13 @@
 		base0 - base
 		assentament0 assentament1 assentament2 - assentament
 		persona0 persona1 - persona
-		suministre0 - suministre
-		combustible0 - combustible
+		suministre0 suministre1 - suministre
 		)
 	(:init
-		(= (funcion1 combustible0) 3)
-		(= (coste-total) 0)
-		;(= (coste-total) 2)
+		(= (coste-total-combustible) 0)
+		(= (comb_restant rover0) 5)
+		(= (comb_restant rover1) 5)
+		(= (comb_inicial) 5)
 		(aparcat rover0 base0)
 		(rover_buit rover0)
 		(aparcat rover1 base0)
@@ -23,9 +23,9 @@
 		(peticio_p persona1 assentament0)
 	)
 	(:goal
-		(and (deixo_p persona0 assentament2)
-		(deixo_p persona1 assentament0)
-		(deixo_s suministre0 assentament1))
+		(and (forall (?p - persona)
+			deixo_p ?p) (forall (?s - suministre)
+			deixo_s ?s) )
 	)
-	(:metric minimize(coste-total))
+	(:metric minimize (coste-total-combustible) )
 )
