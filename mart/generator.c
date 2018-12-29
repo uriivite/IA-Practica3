@@ -64,7 +64,6 @@ int main(int argc, char const *argv[]) {
     int nAssentaments = rand() % 20 + 1;
     int nPersones = rand() % 10 + 1;
     int nSuministres = rand() % 10 + 1;
-    //int nCombustible = rand() % 20;
     
     //DEFINE PROBLEM
     
@@ -93,7 +92,7 @@ int main(int argc, char const *argv[]) {
 	for (int i = 0; i < nSuministres; i++) makePeticionsS(i, nAssentaments, buff);
 
 	//GOAL
-		char aux[60];
+	char aux[60];
 	strcat(buff, "\n)\n(:goal\n(and");
 	for (int i = 0; i < nPersones; i++) {
 		sprintf(aux, "(deixo_p persona%d)\n", i);
