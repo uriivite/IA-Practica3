@@ -77,8 +77,8 @@ int main(int argc, char const *argv[]) {
 	//INIT
 	
 	strcat(buff, "\n)\n(:init\n");
-	char func[100];
-	sprintf(func,"(= (coste-total-combustible) 0)\n (= (comb_inicial))\n");
+	char func[110];
+	sprintf(func,"(= (coste-total-combustible) 0)\n (= (comb_inicial) 5)\n");
 	strcat(buff, func);
 	for (int i = 0; i < nRovers; i++) {
 		sprintf (func,"(= (fuel-level rover%d) 5)\n",i);
