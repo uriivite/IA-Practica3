@@ -1,0 +1,49 @@
+(define (problem roverprob1) (:domain Mart)
+(:objects
+rover0 rover1 rover2 - rover
+base0 base1 base2 base3 base4 - base
+assentament0 assentament1 assentament2 assentament3 assentament4 assentament5 assentament6 - assentament
+persona0 persona1 persona2 - persona
+suministre0 suministre1 suministre2 suministre3 - suministre
+
+)
+(:init
+(= (coste-total-combustible) 0)
+ (= (comb_inicial) 5)
+(= (fuel-level rover0) 5)
+(= (fuel-level rover1) 5)
+(= (fuel-level rover2) 5)
+(aparcat rover0 base2)
+(rover_buit rover0)
+(aparcat rover1 base4)
+(rover_buit rover1)
+(aparcat rover2 base4)
+(rover_buit rover2)
+(l_persona persona0 assentament6)
+(l_persona persona1 assentament4)
+(l_persona persona2 assentament2)
+(l_sum suministre0 assentament3)
+(l_sum suministre1 assentament5)
+(l_sum suministre2 assentament3)
+(l_sum suministre3 assentament5)
+(peticio_p persona0 assentament2)
+(peticio_p persona1 assentament0)
+(peticio_p persona2 assentament4)
+(peticio_s suministre0 assentament5)
+(peticio_s suministre1 assentament4)
+(peticio_s suministre2 assentament4)
+(peticio_s suministre3 assentament6)
+
+)
+(:goal
+(and(deixo_p persona0)
+(deixo_p persona1)
+(deixo_p persona2)
+(deixo_s suministre0)
+(deixo_s suministre1)
+(deixo_s suministre2)
+(deixo_s suministre3)
+)
+)
+(:metric minimize(coste-total))
+)
