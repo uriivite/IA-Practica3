@@ -7,6 +7,7 @@
 #include <string.h>
 #include <time.h>
 
+
 void create(int n, char tipo[], char buff[]){
     char aux[20];
 	for (int i = 0; i < n; i++){
@@ -77,6 +78,13 @@ int main(int argc, char const *argv[]) {
 	//INIT
 	
 	strcat(buff, "\n)\n(:init\n");
+	char func[100];
+	sprintf(func,"(= (coste-total-combustible) 0)\n (= (comb_inicial))\n");
+	strcat(buff, func);
+	for (int i = 0; i < nRovers; i++) {
+		sprintf (func,"(= (fuel-level rover%d) 5)\n",i);
+		strcat(buff, func);
+	}
 	
 	for (int i = 0; i < nRovers; i++) iniRovers(i,nBases,buff);
 	for (int i = 0; i < nPersones; i++) iniPersones(i,nAssentaments, buff);
@@ -85,12 +93,19 @@ int main(int argc, char const *argv[]) {
 	for (int i = 0; i < nSuministres; i++) makePeticionsS(i, nAssentaments, buff);
 
 	//GOAL
-	
-	strcat(buff, "\n)\n(:goal\n");
-	
+		char aux[60];
+	strcat(buff, "\n)\n(:goal\n(and");
+	for (int i = 0; i < nPersones; i++) {
+		sprintf(aux, "(deixo_p persona%d)\n", i);
+		strcat (buff, aux);
+	}
+	for (int i = 0; i < nSuministres; i++) {
+		sprintf(aux, "(deixo_s suministre%d)\n", i);
+		strcat (buff, aux);
+	}
 	//METRIC
 	
-    strcat(buff, "\n)\n(:metric minimize(coste-total))\n)\n");
+    strcat(buff, ")\n)\n(:metric minimize(coste-total))\n)\n");
     
     //WRITE FILE AND CLOSE
 	fputs (buff, fd);
