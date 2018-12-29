@@ -1,6 +1,6 @@
 (define (domain Mart)
   (:requirements :adl :typing :equality :fluents :action-costs :conditional-effects)
-  (:types rover persona suministre assentament base)
+  (:types rover persona suministre assentament base combustible)
 
   (:predicates
       (aparcat    ?r - rover      ?b - base)                        ; rover ?r aparcat a ?a
@@ -24,9 +24,9 @@
 
 (:action translate
   :parameters (?r - rover ?b - base ?a0 - assentament ?a1 - assentament)
-  :precondition (and (or (aparcat ?r ?b) (l_rover ?r ?a0)) (> (comb_restant ?r) 1))
+  :precondition (and (or (aparcat ?r ?b) (l_rover ?r ?a0)) (> (fuel-level ?r) 1))
   :effect (and (when (aparcat ?r ?b) (not (aparcat ?r ?b)) ) (when (l_rover ?r ?a0)
-            (not (l_rover ?r ?a0)) ) (l_rover ?r ?a1) (increase (coste-total-combustible) 1) (decrease (comb_restant ?r) 1))
+            (not (l_rover ?r ?a0)) ) (l_rover ?r ?a1) (increase (coste-total-combustible) 1) (decrease (fuel-level ?r) 1))
 )
 
 
@@ -66,12 +66,12 @@
             (and (not (rover_1p ?r ?p1))
             	(not (rover_1p ?r ?p2))
             	(not (rover_2p ?r ?p1 ?p2))
-                (deixo_p ?p1 ?a)
+                (deixo_p ?p1)
             	(deixo_p ?p2)
             	(rover_buit ?r)
             )
           )
-          (when (and (rover_1p ?r ?p1) (rover_1p ?r ?p2)(peticio_p ?p1 ?a)(not(peticio_p ?p2 ?a)))
+          (when (and (rover_1p ?r ?p1) (rover_1p ?r ?p2)(peticio_p ?p1 ?a) (not(peticio_p ?p2 ?a)))
               (and (not (rover_1p ?r ?p1))
                     (deixo_p ?p1)
                     (rover_1p ?r ?p2)
@@ -100,8 +100,8 @@
 
 (:action carregar
 	:parameters (?r - rover ?b - base  ?a - assentament)
-	:precondition (and (not (aparcat ?r ?b)) (l_rover ?r ?a) (= (fuel-level ?r) 1)
-	:effect (and (aparcat ?r ?b) (not (l_rover ?r ?a)) (assign (fuel-level ?r) comb_inicial) (increase (coste-total-combustible) 1))
+	:precondition (and (not (aparcat ?r ?b)) (l_rover ?r ?a) (= (fuel-level ?r) 1))
+	:effect (and (aparcat ?r ?b) (not (l_rover ?r ?a)) (assign (fuel-level ?r) (comb_inicial)) (increase (coste-total-combustible) 1))
 )
 
 )
